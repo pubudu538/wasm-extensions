@@ -1,3 +1,2 @@
-/bazel-*
-example/bazel-*
+#example/bazel-*
 zig-cache
