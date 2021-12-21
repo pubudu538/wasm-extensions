@@ -1,7 +1,7 @@
 #include <string>
 #include <unordered_map>
 
-// #include "absl/strings/str_cat.h"
+#include "absl/strings/str_cat.h"
 #include "extensions/common/wasm/json_util.h"
 #include "proxy_wasm_intrinsics.h"
 
