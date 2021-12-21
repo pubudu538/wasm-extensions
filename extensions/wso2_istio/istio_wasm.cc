@@ -30,7 +30,7 @@ static RegisterContextFactory register_ExampleContext(CONTEXT_FACTORY(ExampleCon
                                                       ROOT_FACTORY(ExampleRootContext));
 
 FilterHeadersStatus ExampleContext::onRequestHeaders(uint32_t headers, bool end_of_stream) {
-  logInfo(std::string("onRequdestHeaders ") + std::to_string(id()));
+  logInfo(std::string("onRequdestsHeaders ") + std::to_string(id()));
   auto path = getRequestHeader(":path");
   logInfo(std::string("header path ") + std::string(path->view()));
   addResponseHeader("X-Wasmss-custom", "FOO");

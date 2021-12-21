@@ -4,6 +4,6 @@ cp ../../bazel-bin/extensions/wso2_istio/istio_example.wasm .
 
 date_value=$(date)
 git commit -a -m "$date_value"
-git push pubudu master
+git push origin master
 
 sha256sum istio_example.wasm
