@@ -3,6 +3,7 @@
 
 #include "absl/strings/str_cat.h"
 #include "extensions/common/wasm/json_util.h"
+#include "extensions/wso2_istio/istio_wasm.h"
 #include "proxy_wasm_intrinsics.h"
 
 using ::nlohmann::json;
@@ -11,32 +12,32 @@ using ::Wasm::Common::JsonGetField;
 using ::Wasm::Common::JsonObjectIterate;
 using ::Wasm::Common::JsonValueAs;
 
-class ExampleRootContext : public RootContext {
- public:
-  explicit ExampleRootContext(uint32_t id, std::string_view root_id)
-      : RootContext(id, root_id) {}
+// class ExampleRootContext : public RootContext {
+//  public:
+//   explicit ExampleRootContext(uint32_t id, std::string_view root_id)
+//       : RootContext(id, root_id) {}
 
-  FilterHeadersStatus check();
-  bool onStart(size_t) override;
-  bool onConfigure(size_t) override;
+//   FilterHeadersStatus check();
+//   bool onStart(size_t) override;
+//   bool onConfigure(size_t) override;
 
- private:
-  std::string opa_host_;
-};
+//  private:
+//   std::string opa_host_;
+// };
 
-class ExampleContext : public Context {
- public:
-  explicit ExampleContext(uint32_t id, RootContext *root) : Context(id, root) {}
+// class ExampleContext : public Context {
+//  public:
+//   explicit ExampleContext(uint32_t id, RootContext *root) : Context(id, root) {}
 
-  FilterHeadersStatus onRequestHeaders(uint32_t headers,
-                                       bool end_of_stream) override;
-  void onDone() override;
+//   FilterHeadersStatus onRequestHeaders(uint32_t headers,
+//                                        bool end_of_stream) override;
+//   void onDone() override;
 
- private:
-  inline ExampleRootContext *rootContext() {
-    return dynamic_cast<ExampleRootContext *>(this->root());
-  }
-};
+//  private:
+//   inline ExampleRootContext *rootContext() {
+//     return dynamic_cast<ExampleRootContext *>(this->root());
+//   }
+// };
 static RegisterContextFactory register_ExampleContext(
     CONTEXT_FACTORY(ExampleContext), ROOT_FACTORY(ExampleRootContext));
 
@@ -91,24 +92,11 @@ bool ExampleRootContext::onConfigure(size_t config_size) {
     return false;
   }
 
-  // Get OPA extension configuration
-  // {
-  //   "opa_service_host": "opa.default.svc.cluster.local",
-  //   "opa_cluster_name": "outbound|8080||opa.default.svc.cluster.local",
-  //   "check_result_cache_valid_sec": 10
-  // }
-  // Parse and get opa service host.
 
   auto j = result.value();
   auto it = j.find("clustername");
   if (it != j.end()) {
     auto opa_host_val = JsonValueAs<std::string>(it.value());
-    // if (opa_host_val.second != Wasm::Common::JsonParserResultDetail::OK) {
-    //   LOG_WARN(absl::StrCat(
-    //       "cannot parse opa service host in plugin configuration JSON string:
-    //       ", configuration_data->view()));
-    //   return false;
-    // }
     opa_host_ = opa_host_val.first.value();
     logInfo(opa_host_);
   } else {
