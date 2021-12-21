@@ -40,7 +40,7 @@ FilterHeadersStatus ExampleContext::onRequestHeaders(uint32_t headers,
 
   logInfo("opa_host_->view()");
 
-  logInfo(opa_host_->view());
+  // logInfo(opa_host_->view());
   return FilterHeadersStatus::Continue;
 }
 
@@ -95,7 +95,7 @@ bool ExampleRootContext::onConfigure(size_t config_size) {
     //   return false;
     // }
     opa_host_ = opa_host_val.first.value();
-    logInfo(opa_host_);
+    // logInfo(opa_host_);
   } else {
     LOG_WARN(
         absl::StrCat("opa service host must be provided in plugin "
