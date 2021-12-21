@@ -11,7 +11,7 @@
 //using ::Wasm::Common::JsonArrayIterate;
 //using ::Wasm::Common::JsonGetField;
 //using ::Wasm::Common::JsonObjectIterate;
-//using ::Wasm::Common::JsonValueAs;
+using ::Wasm::Common::JsonValueAs;
 
 static RegisterContextFactory register_ExampleContext(
     CONTEXT_FACTORY(ExampleContext), ROOT_FACTORY(ExampleRootContext));
