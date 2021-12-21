@@ -50,7 +50,6 @@ FilterHeadersStatus ExampleContext::onRequestHeaders(uint32_t headers,
   logInfo("opa_host_->view()");
 
   rootContext()->check();
-  logInfo(opa_host_);
   return FilterHeadersStatus::Continue;
 }
 
