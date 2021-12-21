@@ -18,7 +18,7 @@ class ExampleRootContext : public RootContext {
 
   bool onStart(size_t) override;
   bool onConfigure(size_t) override;
-  std::string opa_host_;
+  
 
   // private:
   //   std::string opa_host_;
@@ -31,6 +31,7 @@ class ExampleContext : public Context {
   FilterHeadersStatus onRequestHeaders(uint32_t headers,
                                        bool end_of_stream) override;
   void onDone() override;
+  std::string opa_host_;
 };
 static RegisterContextFactory register_ExampleContext(
     CONTEXT_FACTORY(ExampleContext), ROOT_FACTORY(ExampleRootContext));
