@@ -37,6 +37,10 @@ FilterHeadersStatus ExampleContext::onRequestHeaders(uint32_t headers,
   auto path = getRequestHeader(":path");
   logInfo(std::string("header path ") + std::string(path->view()));
   addResponseHeader("X-Wasmss-custom", "FOO");
+
+  logInfo("opa_host_->view()");
+
+  logInfo(opa_host_->view());
   return FilterHeadersStatus::Continue;
 }
 
@@ -69,11 +73,38 @@ bool ExampleRootContext::onConfigure(size_t config_size) {
   if (!result.has_value()) {
     LOG_WARN(absl::StrCat("cannot parse plugin configuration JSON string: ",
                           configuration_data->view()));
-    logWarn("cannot parse plugin configuration JSON string: ");
     return false;
+  } 
+
+  // Get OPA extension configuration
+  // {
+  //   "opa_service_host": "opa.default.svc.cluster.local",
+  //   "opa_cluster_name": "outbound|8080||opa.default.svc.cluster.local",
+  //   "check_result_cache_valid_sec": 10
+  // }
+  // Parse and get opa service host.
+
+  auto j = result.value();
+  auto it = j.find("clustername");
+  if (it != j.end()) {
+    // auto opa_host_val = JsonValueAs<std::string>(it.value());
+    // if (opa_host_val.second != Wasm::Common::JsonParserResultDetail::OK) {
+    //   LOG_WARN(absl::StrCat(
+    //       "cannot parse opa service host in plugin configuration JSON string: ",
+    //       configuration_data->view()));
+    //   return false;
+    // }
+    opa_host_ = opa_host_val.first.value();
+    logInfo(opa_host_->view());
   } else {
-    logInfo("onConfigure....... - Parsing done@@@!!");
+    LOG_WARN(
+        absl::StrCat("opa service host must be provided in plugin "
+                     "configuration JSON string: ",
+                     configuration_data->view()));
+    return false;
   }
+
+
 
   return true;
 }
