@@ -16,12 +16,12 @@ class ExampleRootContext : public RootContext {
   explicit ExampleRootContext(uint32_t id, std::string_view root_id)
       : RootContext(id, root_id) {}
 
+  FilterHeadersStatus check();
   bool onStart(size_t) override;
   bool onConfigure(size_t) override;
-  
 
-  // private:
-  //   std::string opa_host_;
+ private:
+  std::string opa_host_;
 };
 
 class ExampleContext : public Context {
@@ -31,7 +31,11 @@ class ExampleContext : public Context {
   FilterHeadersStatus onRequestHeaders(uint32_t headers,
                                        bool end_of_stream) override;
   void onDone() override;
-  std::string opa_host_;
+
+ private:
+  inline ExampleRootContext *rootContext() {
+    return dynamic_cast<ExampleRootContext *>(this->root());
+  }
 };
 static RegisterContextFactory register_ExampleContext(
     CONTEXT_FACTORY(ExampleContext), ROOT_FACTORY(ExampleRootContext));
@@ -45,6 +49,7 @@ FilterHeadersStatus ExampleContext::onRequestHeaders(uint32_t headers,
 
   logInfo("opa_host_->view()");
 
+  rootContext()->check();
   logInfo(opa_host_);
   return FilterHeadersStatus::Continue;
 }
@@ -61,6 +66,12 @@ bool ExampleRootContext::onStart(size_t) {
 //   proxy_set_tick_period_milliseconds(1000); // 1 sec
 //   return true;
 // }
+FilterHeadersStatus ExampleRootContext::check() {
+
+  logInfo("oncheeeeee000 -------");
+  logInfo(opa_host_);
+  return FilterHeadersStatus::Continue;
+}
 
 bool ExampleRootContext::onConfigure(size_t config_size) {
   LOG_INFO("onConfigure called");
@@ -79,7 +90,7 @@ bool ExampleRootContext::onConfigure(size_t config_size) {
     LOG_WARN(absl::StrCat("cannot parse plugin configuration JSON string: ",
                           configuration_data->view()));
     return false;
-  } 
+  }
 
   // Get OPA extension configuration
   // {
@@ -95,8 +106,8 @@ bool ExampleRootContext::onConfigure(size_t config_size) {
     auto opa_host_val = JsonValueAs<std::string>(it.value());
     // if (opa_host_val.second != Wasm::Common::JsonParserResultDetail::OK) {
     //   LOG_WARN(absl::StrCat(
-    //       "cannot parse opa service host in plugin configuration JSON string: ",
-    //       configuration_data->view()));
+    //       "cannot parse opa service host in plugin configuration JSON string:
+    //       ", configuration_data->view()));
     //   return false;
     // }
     opa_host_ = opa_host_val.first.value();
@@ -108,8 +119,6 @@ bool ExampleRootContext::onConfigure(size_t config_size) {
                      configuration_data->view()));
     return false;
   }
-
-
 
   return true;
 }
