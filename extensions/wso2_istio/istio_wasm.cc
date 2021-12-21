@@ -7,11 +7,11 @@
 #include "extensions/common/wasm/json_util.h"
 #include "proxy_wasm_intrinsics.h"
 
-using ::nlohmann::json;
-using ::Wasm::Common::JsonArrayIterate;
-using ::Wasm::Common::JsonGetField;
-using ::Wasm::Common::JsonObjectIterate;
-using ::Wasm::Common::JsonValueAs;
+//using ::nlohmann::json;
+//using ::Wasm::Common::JsonArrayIterate;
+//using ::Wasm::Common::JsonGetField;
+//using ::Wasm::Common::JsonObjectIterate;
+//using ::Wasm::Common::JsonValueAs;
 
 static RegisterContextFactory register_ExampleContext(
     CONTEXT_FACTORY(ExampleContext), ROOT_FACTORY(ExampleRootContext));
