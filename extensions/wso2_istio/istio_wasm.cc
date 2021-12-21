@@ -18,9 +18,10 @@ class ExampleRootContext : public RootContext {
 
   bool onStart(size_t) override;
   bool onConfigure(size_t) override;
+  std::string opa_host_;
 
-  private:
-    std::string opa_host_;
+  // private:
+  //   std::string opa_host_;
 };
 
 class ExampleContext : public Context {
