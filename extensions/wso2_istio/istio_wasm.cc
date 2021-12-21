@@ -87,7 +87,7 @@ bool ExampleRootContext::onConfigure(size_t config_size) {
   auto j = result.value();
   auto it = j.find("clustername");
   if (it != j.end()) {
-    // auto opa_host_val = JsonValueAs<std::string>(it.value());
+    auto opa_host_val = JsonValueAs<std::string>(it.value());
     // if (opa_host_val.second != Wasm::Common::JsonParserResultDetail::OK) {
     //   LOG_WARN(absl::StrCat(
     //       "cannot parse opa service host in plugin configuration JSON string: ",
