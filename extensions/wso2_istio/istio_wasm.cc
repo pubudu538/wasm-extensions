@@ -12,32 +12,6 @@ using ::Wasm::Common::JsonGetField;
 using ::Wasm::Common::JsonObjectIterate;
 using ::Wasm::Common::JsonValueAs;
 
-// class ExampleRootContext : public RootContext {
-//  public:
-//   explicit ExampleRootContext(uint32_t id, std::string_view root_id)
-//       : RootContext(id, root_id) {}
-
-//   FilterHeadersStatus check();
-//   bool onStart(size_t) override;
-//   bool onConfigure(size_t) override;
-
-//  private:
-//   std::string opa_host_;
-// };
-
-// class ExampleContext : public Context {
-//  public:
-//   explicit ExampleContext(uint32_t id, RootContext *root) : Context(id, root) {}
-
-//   FilterHeadersStatus onRequestHeaders(uint32_t headers,
-//                                        bool end_of_stream) override;
-//   void onDone() override;
-
-//  private:
-//   inline ExampleRootContext *rootContext() {
-//     return dynamic_cast<ExampleRootContext *>(this->root());
-//   }
-// };
 static RegisterContextFactory register_ExampleContext(
     CONTEXT_FACTORY(ExampleContext), ROOT_FACTORY(ExampleRootContext));
 
@@ -61,11 +35,7 @@ bool ExampleRootContext::onStart(size_t) {
   return true;
 }
 
-// bool ExampleRootContext::onConfigure(size_t) {
-//   logInfo("onConfigure");
-//   proxy_set_tick_period_milliseconds(1000); // 1 sec
-//   return true;
-// }
+
 FilterHeadersStatus ExampleRootContext::check() {
 
   logInfo("oncheeeeee000 -------");

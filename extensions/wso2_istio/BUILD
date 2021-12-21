@@ -8,6 +8,7 @@ wasm_cc_binary(
     deps = [
         "@io_istio_proxy//extensions/common/wasm:json_util",
         "@proxy_wasm_cpp_sdk//:proxy_wasm_intrinsics",
+        "//echo:echo_cc_proto",
     ],
 )
 
