@@ -47,7 +47,7 @@ class MyGrpcCallHandler : public GrpcCallHandler<google::protobuf::Value> {
   void onFailure(GrpcStatus status) override {
     LOG_INFO(" GRPC call FAILURE ");
     auto p = getStatus();
-    LOG_DEBUG(std::string("failure ") +
+    LOG_INFO(std::string("failure ") +
               std::to_string(static_cast<int>(status)) +
               std::string(p.second->view()));
     context_->setEffectiveContext();
